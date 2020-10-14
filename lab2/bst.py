@@ -14,7 +14,7 @@ class BinarySearchTree:
             new_node.position = self.current_position
             self.current_position += 1
 
-        node = NodeOperations.search(self.root, identifier)
+        node = self.search(identifier)
         if node:
             return node.position
 
@@ -24,3 +24,6 @@ class BinarySearchTree:
 
     def print_BST(self):
         NodeOperations.inorder(self.root)
+
+    def search(self, identifier):
+        return NodeOperations.search(self.root, identifier)
