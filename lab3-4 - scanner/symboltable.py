@@ -10,3 +10,6 @@ class SymbolTable:
 
     def print(self):
         self.tree.print_BST()
+
+    def print_to_file(self):
+        self.tree.print_to_file()

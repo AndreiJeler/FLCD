@@ -16,5 +16,5 @@ def test_ST():
 
 if __name__ == '__main__':
     #test_ST()
-    scanner = Scanner("p1.in")
+    scanner = Scanner("p1err.in")
     scanner.run()

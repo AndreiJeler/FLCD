@@ -21,9 +21,13 @@ class BinarySearchTree:
         NodeOperations.insert(self.root, new_node)
         new_node.position = self.current_position
         self.current_position += 1
+        return new_node.position
 
     def print_BST(self):
         NodeOperations.inorder(self.root)
 
     def search(self, identifier):
         return NodeOperations.search(self.root, identifier)
+
+    def print_to_file(self):
+        NodeOperations.print_to_file(self.root)

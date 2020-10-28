@@ -41,3 +41,15 @@ class NodeOperations:
             NodeOperations.inorder(root.left)
             print(root.identifier + "->" + str(root.position))
             NodeOperations.inorder(root.right)
+
+    @staticmethod
+    def inorder_result(root, file):
+        if root:
+            NodeOperations.inorder_result(root.left, file)
+            file.write(root.identifier + "->" + str(root.position) + '\n')
+            NodeOperations.inorder_result(root.right, file)
+
+    @staticmethod
+    def print_to_file(root):
+        with open("st.out", 'w') as file:
+            NodeOperations.inorder_result(root, file)

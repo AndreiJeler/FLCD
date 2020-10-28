@@ -34,6 +34,15 @@ class Scanner:
     def get_operator(self, line, start_position):
         i = start_position
         token = ""
+        # if i - 1 > 0 and not self.is_contained_in_operator(line[i-1]):
+        #     return line[i], i+1
+        # if line[i] == '+' or line[i] == '-' or line[i] == '=' or line[i] == '*' or line[i] == '\\':
+        #     if i - 1 > 0 and line[i-1] not in self._separators and self.get_operator(line, i-1)[0] \
+        #             and line[i+1] not in self._separators and not self.is_identifier(line[i+1]) and not self.is_constant(line[i+1]):
+        #         return line[i], i + 1
+        #     elif i-1 > 0 and self.is_identifier(line[i-1]) and self.is_identifier(line[i+1]) or self.is_constant(line[i+1]) or line[i+1] not in self._separators:
+        #         return line[i], i + 1
+
         while i < len(line) and line[i] not in operators and self.is_contained_in_operator(line[i]):
             token += line[i]
             i += 1
@@ -82,34 +91,49 @@ class Scanner:
         return tokens
 
     def run(self):
-        with open(self._file_name, "r") as file:
+        with open(self._file_name, "r", encoding="utf-8") as file:
             line_nr = 1
+            ok = True
             for line in file:
                 tokens = self.get_tokens_from_line(line)
                 print(tokens)
                 for token in tokens:
+                    if token == ' ' or token == '\n':
+                        continue
                     if token in self._separators or token in self._operators or token in self._reserved_words:
-                        self._pif.add(self._tokens[token], -1)
+                        self._pif.add(token, -1)
 
                     elif self.is_identifier(token):
                         id = self._st.insert(token)
-                        self._pif.add(self._tokens['identifier'], id)
+                        self._pif.add('identifier', id)
 
                     elif self.is_constant(token):
                         id = self._st.insert(token)
-                        self._pif.add(self._tokens['constant'], id)
+                        self._pif.add('constant', id)
 
                     else:
-                        raise Exception("Invalid token " + token + " at line" + str(line_nr))
+                        # raise Exception("Invalid token " + token + " at line" + str(line_nr))
+                        print('\033[93m' + "Invalid token " + token + " at line" + str(line_nr) + '\033[0m')
+                        ok = False
 
                 line_nr += 1
 
-        print(self._pif)
-        print(self._st.print())
+        if ok:
+            print("lexically correct")
+            print(self._pif)
+            self._pif.print_to_file()
+
+            self._st.print()
+            self._st.print_to_file()
+        else:
+            print("lexically incorrect. PIF and ST will not be printed.")
 
     def is_identifier(self, token):
         return re.match('^[a-zA-Z_]([a-zA-Z0-9]){,255}$', token) is not None
 
     def is_constant(self, token):
-        # return re.match('^[a-zA-Z_]([a-zA-Z0-9]){,255}$', token) is not None
-        return True
+        is_integer = re.match("^0$|^(([+\\-])?[1-9][0-9]*)$", token)
+        is_string = re.match("^\"([a-zA-Z0-9_.?,!; @/|(){}\[\]\+\-*%$])*\"$", token)
+        is_bool = token == "true" or token == "false"
+
+        return is_integer or is_string or is_bool
