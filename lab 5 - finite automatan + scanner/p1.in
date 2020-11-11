@@ -1,0 +1,22 @@
+program
+{
+integer a, b, c;
+string printMessage = "is the biggest number";
+read(a);
+read(b);
+read(c);
+a = -2;
+if (a > b and a > c)
+{
+write("a", printMessage);
+}
+elif (b > a and b > c)
+{
+write("b", printMessage);
+}
+else
+{
+write("c", printMessage);
+}
+return 0;
+}

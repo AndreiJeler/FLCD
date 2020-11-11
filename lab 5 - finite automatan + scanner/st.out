@@ -1,0 +1,10 @@
+"a"->7
+"b"->8
+"c"->9
+"is the biggest number"->5
+-2->6
+0->10
+a->1
+b->2
+c->3
+printMessage->4

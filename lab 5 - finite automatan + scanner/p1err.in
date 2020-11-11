@@ -1,0 +1,21 @@
+program
+{
+integer 1a, 2b, 3c;
+read(a);
+read(b);
+read(c);
+if (a > b && a > c) then
+#
+write("A is the biggest number");
+#
+elif (b > a && b > c) then
+#
+write("B is is the biggest number");
+#
+else
+#
+write("C is the biggest number");
+#
+a = -5;
+return 0;
+}
