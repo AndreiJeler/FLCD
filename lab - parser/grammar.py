@@ -51,3 +51,15 @@ class Grammar:
     @property
     def start(self):
         return self.__start
+
+    def get_productions_of_non_terminals(self, symbol):
+        if not symbol in self.nonterminals:
+            return None
+        return self.productions[symbol]
+
+    def get_next_production(self, symbol, production):
+        productions = self.get_productions_of_non_terminals(symbol)
+        for i in range(len(productions)):
+            if production == production[i] and i < len(productions) - 1:
+                return productions[i + 1]
+        return None
