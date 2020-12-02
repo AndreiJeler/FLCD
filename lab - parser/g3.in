@@ -1,0 +1,30 @@
+program compound_stmt stmt_list stmt simple_stmt complex_stmt IO_stmt decl_stmt type primary_types array_types number  non_digit assign_stmt expression operator term factor return_stmt if_stmt loop_stmt for_stmt while_stmt condition relational_operator conditional_operator elif_stmt NZidentifier NZEidentifier
++ - * / % = < > <= >= == != and or not { } [ ] ( ) ; , \n \t read write if else elif while for integer string char bool true false start { } return identifier constant
+program
+program - start compound_stmt
+compound_stmt - { stmt_list }
+stmt_list - stmt | stmt stmt_list
+stmt - simple_stmt | complex_stmt
+simple_stmt - decl_stmt | assign_stmt ; | return_stmt ; | IO_stmt ;
+complex_stmt - if_stmt | loop_stmt
+IO_stmt - read ( identifier ) | write ( expression )
+decl_stmt - type identifier NZidentifier | type identifier = expression NZEidentifier
+NZidentifier - , identifier NZidentifier | ;
+NZEidentifier - , identifier = expression NZEidentifier | ;
+type - primary_types | array_types
+primary_types - integer | char | string | bool
+array_types - primary_types [ constant ] 
+assign_stmt - identifier = expression
+expression - expression operator term | term
+operator - +
+term - term * factor | term / factor | factor
+factor - ( expression ) | identifier | identifier [ number ] | constant
+return_stmt - return expression
+if_stmt - if condition compound_stmt elif_stmt | if condition compound_stmt elif_stmt else compound_stmt
+elif_stmt - elif condition compound_stmt elif_stmt | ;
+loop_stmt - for_stmt | while_stmt
+for_stmt - for ( assign_stmt ; condition ; assign_stmt ) | for ( assign_stmt ; condition ; assign_stmt )
+while_stmt - while ( condition ) compound_stmt
+condition - expression relational_operator expression conditional_operator condition | not expression relational_operator expression conditional_operator condition | expression relational_operator expression | not expression relational_operator expression
+relational_operator - > | < | >= | <= | == | !=
+conditional_operator - and | or
