@@ -18,7 +18,6 @@ class Node:
         return f"Node: position {self.position} value: {str(self.element)} Parent {parent} Left_child: {left_c} Right_sibling {right_s}"
 
 
-
 class ParserTree:
     def __init__(self, grammar):
         self.head = None
@@ -118,10 +117,10 @@ class ParserTree:
 
         if file is None:
             print(
-                f' \nFathers: {fathers}\nLeft children: {left_child}\nRight siblings = {right_sibling}')
+                f' \nValues: {self.values}\nFathers: {fathers}\nLeft children: {left_child}\nRight siblings = {right_sibling}')
         else:
             file.write(
-                f' \nFathers: {fathers}\nLeft children: {left_child}\nRight siblings = {right_sibling}')
+                f' \nValues: {self.values}\nFathers: {fathers}\nLeft children: {left_child}\nRight siblings = {right_sibling}')
 
         # for val in self.table.values():
         #     print(val)
