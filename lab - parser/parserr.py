@@ -4,8 +4,8 @@ from parsingTree import ParserTree
 
 
 class Parser:
-    def __init__(self):
-        self.__grammar = Grammar("g3.in")
+    def __init__(self, grammar):
+        self.__grammar = grammar
         self.__configuration = Configuration(self.__grammar.start)
         self.__parser_output = ParserTree(self.__grammar)
 
@@ -82,7 +82,7 @@ class Parser:
 
     def run(self, w):
         while self.__configuration.state != State.FINAL and self.__configuration.state != State.ERROR:
-            print(self.__configuration)
+            # print(self.__configuration)
 
             if self.__configuration.state == State.NORMAL:
                 if not self.__configuration.input_stack and self.__configuration.index == len(w) + 1:

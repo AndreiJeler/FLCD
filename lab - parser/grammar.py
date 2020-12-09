@@ -33,8 +33,8 @@ class Grammar:
             self.__start = filee.readline().strip()
             for line in filee.readlines():
                 self.__productions[line.split(
-                    "-")[0].strip()] = [val.strip().split(" ") for val in line.split("-")[1].strip().split("|")]
-            print(self.__productions)
+                    "-")[0].strip()] = [val.strip().split(" ") for val in line.split("->")[1].strip().split("|")]
+            # print(self.__productions)
 
     @property
     def nonterminals(self):

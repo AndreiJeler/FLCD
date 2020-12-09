@@ -13,13 +13,15 @@ def read_pif(file_path):
 
 
 if __name__ == "__main__":
-    # grammar = Grammar("g1.in")
+    # grammar = Grammar("g_test.in")
     # ui = UI(grammar)
     # ui.run()
 
     lst = read_pif("p1.in")
     print(lst)
 
-    parser = Parser()
+    grammar = Grammar("g1.in")
+
+    parser = Parser(grammar)
     w = ["a", "a", "c", "b", "c"]
-    parser.run(lst)
+    parser.run(w)
