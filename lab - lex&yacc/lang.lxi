@@ -1,0 +1,81 @@
+%{ 	 
+#include <stdio.h>
+#include <string.h>
+#include "y.tab.h"
+
+int currentLine = 1;
+%} 
+
+%option noyywrap
+%option caseless
+
+DIGIT 		[0-9]
+NZ_DIGIT    [1-9]
+ZERO        [0]
+NUMBER      {NZ_DIGIT}{DIGIT}*
+SIGN        [+]|[-]
+INTEGER		{ZERO}|{NUMBER}|{SIGN}{NUMBER}
+SIGNER_INTEGER {SIGN}{NUMBER}
+SPECIAL_CHAR    "_"|"."|","|";"|":"|"?"|"!"|"@"|"/"|"("|")"|"-"|"+"|"="|"{"|"}"|"*"|"["|"]"|"$"|"%"|"^"|" "
+CHAR        {DIGIT}|{SPECIAL_CHAR}|[a-zA-Z]
+CHARACTER 	"'"{CHAR}"'"
+STRING		[\"]{CHAR}*[\"]
+CONSTANT		{STRING}|{INTEGER}|{CHARACTER}
+IDENTIFIER 		[a-zA-Z_][a-zA-Z0-9_]*
+
+%%
+
+and {return AND;}
+or {return OR;}
+not {return NOT;}
+if {return IF;}
+else {return ELSE;}
+elif {return ELIF;}
+while {return WHILE;}
+for {return FOR;}
+read {return READ;}
+write {return WRITE;}
+integer {return INTEGER;}
+string {return STRING;}
+char {return CHAR;}
+program {return PROGRAM;}
+bool {return BOOL;}
+return {return RETURN;}
+
+
+{CONSTANT} {return IDENTIFIER;}
+{IDENTIFIER} {return CONSTANT;}
+
+; {return SEMI_COLON;}
+"," {return COMMA;}
+\t {return DOT;}
+\{ {return OPEN_CURLY_BRACKET;}
+\} {return CLOSED_CURLY_BRACKET;}
+\[ {return OPEN_SQUARE_BRACKET;}
+\] {return CLOSED_SQUARE_BRACKET;}
+\( {return OPEN_ROUND_BRACKET;}
+\) {return CLOSED_ROUND_BRACKET;}
+
+\+ {return PLUS;}
+\- {return MINUS;}
+\* {return MUL;}
+\/ {return DIV;}
+\% { return PERCENT;}
+\< { return LT;}
+\> { return GT;}
+\<= { return LE;}
+\>= { return GE;}
+"=" { return ATRIB;}
+\== { return EQ;}
+\!= { return NOT_EQ;}
+
+[\n\r] {currentLine++;}
+[ \t\n]+ {}
+
+[a-zA-Z_0-9][a-zA-Z0-9_]* {printf("%s - illegal identifier found at line %d\n", yytext, currentLine);}
+\'[a-zA-Z0-9]*\' {printf("%s - illegal char at line %d, did you mean string?\n", yytext, currentLine);}
+[\"]{CHAR}* {printf("%s - illegal string constant at line, you forgot to close it %d\n", yytext, currentLine);}
+
+. {printf("%s - illegal token found at line %d\n",yytext, currentLine);}
+
+%%

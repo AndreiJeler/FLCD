@@ -10,9 +10,14 @@ int currentLine = 1;
 DIGIT 		[0-9]
 NZ_DIGIT    [1-9]
 ZERO        [0]
-INTEGER		{ZERO}|-*{NZ_DIGIT}+{DIGIT}*
-CHARACTER 	"'"[^\n]"'"
-STRING		[\"][^\n]*[\"]
+NUMBER      {NZ_DIGIT}{DIGIT}*
+SIGN        [+]|[-]
+INTEGER		{ZERO}|{NUMBER}|{SIGN}{NUMBER}
+SIGNER_INTEGER {SIGN}{NUMBER}
+SPECIAL_CHAR    "_"|"."|","|";"|":"|"?"|"!"|"@"|"/"|"("|")"|"-"|"+"|"="|"{"|"}"|"*"|"["|"]"|"$"|"%"|"^"|" "
+CHAR        {DIGIT}|{SPECIAL_CHAR}|[a-zA-Z]
+CHARACTER 	"'"{CHAR}"'"
+STRING		[\"]{CHAR}*[\"]
 CONSTANT		{STRING}|{INTEGER}|{CHARACTER}
 IDENTIFIER 		[a-zA-Z_][a-zA-Z0-9_]*
 
@@ -59,11 +64,14 @@ program {printf("%s - reserved word\n", yytext);}
 \== {printf("%s - operator\n", yytext);}
 \!= {printf("%s - operator\n", yytext);}
 
-[\n]+ {currentLine++;}
+[\n\r] {currentLine++;}
 [ \t\n]+ {}
 
 [a-zA-Z_0-9][a-zA-Z0-9_]* {printf("%s - illegal identifier found at line %d\n", yytext, currentLine);}
 \'[a-zA-Z0-9]*\' {printf("%s - illegal char at line %d, did you mean string?\n", yytext, currentLine);}
+[\"]{CHAR}* {printf("%s - illegal string constant at line, you forgot to close it %d\n", yytext, currentLine);}
+
+. {printf("%s - illegal token found at line %d\n",yytext, currentLine);}
 
 %%
 

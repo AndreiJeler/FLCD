@@ -6,7 +6,7 @@ read(b);
 read(c);
 if (a > b && a > c) then
 #
-write("A is the biggest number");
+write("A is the biggest number);
 #
 elif (b > a && b > c) then
 #
@@ -16,6 +16,6 @@ else
 #
 write("C is the biggest number");
 #
-a = -5;
+a = 3-5;
 return 0;
 }
