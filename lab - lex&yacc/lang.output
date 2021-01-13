@@ -1,0 +1,1561 @@
+Terminals unused in grammar
+
+    DOT
+    PERCENT
+
+
+Grammar
+
+    0 $accept: program_stmt $end
+
+    1 program_stmt: PROGRAM compound_stmt
+
+    2 compound_stmt: OPEN_CURLY_BRACKET stmt_list CLOSED_CURLY_BRACKET
+
+    3 stmt_list: stmt
+    4          | stmt stmt_list
+
+    5 stmt: simple_stmt
+    6     | complex_stmt
+
+    7 simple_stmt: decl_stmt
+    8            | assign_stmt SEMI_COLON
+    9            | return_stmt SEMI_COLON
+   10            | IO_stmt SEMI_COLON
+
+   11 complex_stmt: if_stmt
+   12             | loop_stmt
+
+   13 IO_stmt: READ OPEN_ROUND_BRACKET IDENTIFIER CLOSED_ROUND_BRACKET
+   14        | WRITE OPEN_ROUND_BRACKET expression write_expressions
+
+   15 write_expressions: COMMA expression write_expressions
+   16                  | CLOSED_ROUND_BRACKET
+
+   17 decl_stmt: type IDENTIFIER NZidentifier
+   18          | type IDENTIFIER ATRIB expression NZEidentifier
+   19          | type IDENTIFIER ATRIB OPEN_CURLY_BRACKET CONSTANT array_values
+
+   20 array_values: COMMA CONSTANT array_values
+   21             | CLOSED_CURLY_BRACKET SEMI_COLON
+
+   22 NZidentifier: COMMA IDENTIFIER NZidentifier
+   23             | SEMI_COLON
+
+   24 NZEidentifier: COMMA IDENTIFIER ATRIB expression NZEidentifier
+   25              | SEMI_COLON
+
+   26 type: primary_types
+   27     | array_types
+
+   28 primary_types: INTEGER
+   29              | CHAR
+   30              | STRING
+   31              | BOOL
+
+   32 array_types: primary_types OPEN_SQUARE_BRACKET CONSTANT CLOSED_SQUARE_BRACKET
+
+   33 assign_stmt: IDENTIFIER ATRIB expression
+
+   34 expression: term operator expression
+   35           | term
+
+   36 operator: PLUS
+   37         | MINUS
+
+   38 term: factor MUL term
+   39     | factor DIV term
+   40     | factor
+
+   41 factor: OPEN_ROUND_BRACKET expression CLOSED_ROUND_BRACKET
+   42       | IDENTIFIER
+   43       | IDENTIFIER OPEN_SQUARE_BRACKET expression CLOSED_SQUARE_BRACKET
+   44       | CONSTANT
+
+   45 return_stmt: RETURN expression
+
+   46 if_stmt: IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
+   47        | IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+
+   48 elif_stmt: ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+   49          | ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
+   50          | ELSE compound_stmt
+
+   51 loop_stmt: for_stmt
+   52          | while_stmt
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt
+   54         | FOR OPEN_ROUND_BRACKET for_first condition CLOSED_ROUND_BRACKET compound_stmt
+
+   55 for_first: decl_stmt
+   56          | assign_stmt SEMI_COLON
+
+   57 while_stmt: WHILE OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
+
+   58 condition: expression relational_operator expression conditional_operator condition
+   59          | NOT expression relational_operator expression conditional_operator condition
+   60          | expression relational_operator expression
+   61          | NOT expression relational_operator expression
+
+   62 relational_operator: GT
+   63                    | LT
+   64                    | GE
+   65                    | LE
+   66                    | EQ
+   67                    | NOT_EQ
+
+   68 conditional_operator: AND
+   69                     | OR
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    AND (258) 68
+    OR (259) 69
+    NOT (260) 59 61
+    IF (261) 46 47
+    ELSE (262) 50
+    ELIF (263) 48 49
+    WHILE (264) 57
+    FOR (265) 53 54
+    READ (266) 13
+    WRITE (267) 14
+    INTEGER (268) 28
+    STRING (269) 30
+    CHAR (270) 29
+    BOOL (271) 31
+    RETURN (272) 45
+    PROGRAM (273) 1
+    IDENTIFIER (274) 13 17 18 19 22 24 33 42 43
+    CONSTANT (275) 19 20 32 44
+    SEMI_COLON (276) 8 9 10 21 23 25 53 56
+    COMMA (277) 15 20 22 24
+    DOT (278)
+    OPEN_CURLY_BRACKET (279) 2 19
+    CLOSED_CURLY_BRACKET (280) 2 21
+    OPEN_SQUARE_BRACKET (281) 32 43
+    CLOSED_SQUARE_BRACKET (282) 32 43
+    OPEN_ROUND_BRACKET (283) 13 14 41 46 47 48 49 53 54 57
+    CLOSED_ROUND_BRACKET (284) 13 16 41 46 47 48 49 53 54 57
+    PLUS (285) 36
+    MINUS (286) 37
+    MUL (287) 38
+    DIV (288) 39
+    PERCENT (289)
+    LT (290) 63
+    GT (291) 62
+    LE (292) 65
+    GE (293) 64
+    ATRIB (294) 18 19 24 33
+    EQ (295) 66
+    NOT_EQ (296) 67
+
+
+Nonterminals, with rules where they appear
+
+    $accept (42)
+        on left: 0
+    program_stmt (43)
+        on left: 1
+        on right: 0
+    compound_stmt (44)
+        on left: 2
+        on right: 1 46 47 48 49 50 53 54 57
+    stmt_list (45)
+        on left: 3 4
+        on right: 2 4
+    stmt (46)
+        on left: 5 6
+        on right: 3 4
+    simple_stmt (47)
+        on left: 7 8 9 10
+        on right: 5
+    complex_stmt (48)
+        on left: 11 12
+        on right: 6
+    IO_stmt (49)
+        on left: 13 14
+        on right: 10
+    write_expressions (50)
+        on left: 15 16
+        on right: 14 15
+    decl_stmt (51)
+        on left: 17 18 19
+        on right: 7 55
+    array_values (52)
+        on left: 20 21
+        on right: 19 20
+    NZidentifier (53)
+        on left: 22 23
+        on right: 17 22
+    NZEidentifier (54)
+        on left: 24 25
+        on right: 18 24
+    type (55)
+        on left: 26 27
+        on right: 17 18 19
+    primary_types (56)
+        on left: 28 29 30 31
+        on right: 26 32
+    array_types (57)
+        on left: 32
+        on right: 27
+    assign_stmt (58)
+        on left: 33
+        on right: 8 53 56
+    expression (59)
+        on left: 34 35
+        on right: 14 15 18 24 33 34 41 43 45 58 59 60 61
+    operator (60)
+        on left: 36 37
+        on right: 34
+    term (61)
+        on left: 38 39 40
+        on right: 34 35 38 39
+    factor (62)
+        on left: 41 42 43 44
+        on right: 38 39 40
+    return_stmt (63)
+        on left: 45
+        on right: 9
+    if_stmt (64)
+        on left: 46 47
+        on right: 11
+    elif_stmt (65)
+        on left: 48 49 50
+        on right: 47 48
+    loop_stmt (66)
+        on left: 51 52
+        on right: 12
+    for_stmt (67)
+        on left: 53 54
+        on right: 51
+    for_first (68)
+        on left: 55 56
+        on right: 53 54
+    while_stmt (69)
+        on left: 57
+        on right: 52
+    condition (70)
+        on left: 58 59 60 61
+        on right: 46 47 48 49 53 54 57 58 59
+    relational_operator (71)
+        on left: 62 63 64 65 66 67
+        on right: 58 59 60 61
+    conditional_operator (72)
+        on left: 68 69
+        on right: 58 59
+
+
+State 0
+
+    0 $accept: . program_stmt $end
+
+    PROGRAM  shift, and go to state 1
+
+    program_stmt  go to state 2
+
+
+State 1
+
+    1 program_stmt: PROGRAM . compound_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 4
+
+
+State 2
+
+    0 $accept: program_stmt . $end
+
+    $end  shift, and go to state 5
+
+
+State 3
+
+    2 compound_stmt: OPEN_CURLY_BRACKET . stmt_list CLOSED_CURLY_BRACKET
+
+    IF          shift, and go to state 6
+    WHILE       shift, and go to state 7
+    FOR         shift, and go to state 8
+    READ        shift, and go to state 9
+    WRITE       shift, and go to state 10
+    INTEGER     shift, and go to state 11
+    STRING      shift, and go to state 12
+    CHAR        shift, and go to state 13
+    BOOL        shift, and go to state 14
+    RETURN      shift, and go to state 15
+    IDENTIFIER  shift, and go to state 16
+
+    stmt_list      go to state 17
+    stmt           go to state 18
+    simple_stmt    go to state 19
+    complex_stmt   go to state 20
+    IO_stmt        go to state 21
+    decl_stmt      go to state 22
+    type           go to state 23
+    primary_types  go to state 24
+    array_types    go to state 25
+    assign_stmt    go to state 26
+    return_stmt    go to state 27
+    if_stmt        go to state 28
+    loop_stmt      go to state 29
+    for_stmt       go to state 30
+    while_stmt     go to state 31
+
+
+State 4
+
+    1 program_stmt: PROGRAM compound_stmt .
+
+    $default  reduce using rule 1 (program_stmt)
+
+
+State 5
+
+    0 $accept: program_stmt $end .
+
+    $default  accept
+
+
+State 6
+
+   46 if_stmt: IF . OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
+   47        | IF . OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+
+    OPEN_ROUND_BRACKET  shift, and go to state 32
+
+
+State 7
+
+   57 while_stmt: WHILE . OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
+
+    OPEN_ROUND_BRACKET  shift, and go to state 33
+
+
+State 8
+
+   53 for_stmt: FOR . OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt
+   54         | FOR . OPEN_ROUND_BRACKET for_first condition CLOSED_ROUND_BRACKET compound_stmt
+
+    OPEN_ROUND_BRACKET  shift, and go to state 34
+
+
+State 9
+
+   13 IO_stmt: READ . OPEN_ROUND_BRACKET IDENTIFIER CLOSED_ROUND_BRACKET
+
+    OPEN_ROUND_BRACKET  shift, and go to state 35
+
+
+State 10
+
+   14 IO_stmt: WRITE . OPEN_ROUND_BRACKET expression write_expressions
+
+    OPEN_ROUND_BRACKET  shift, and go to state 36
+
+
+State 11
+
+   28 primary_types: INTEGER .
+
+    $default  reduce using rule 28 (primary_types)
+
+
+State 12
+
+   30 primary_types: STRING .
+
+    $default  reduce using rule 30 (primary_types)
+
+
+State 13
+
+   29 primary_types: CHAR .
+
+    $default  reduce using rule 29 (primary_types)
+
+
+State 14
+
+   31 primary_types: BOOL .
+
+    $default  reduce using rule 31 (primary_types)
+
+
+State 15
+
+   45 return_stmt: RETURN . expression
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 40
+    term        go to state 41
+    factor      go to state 42
+
+
+State 16
+
+   33 assign_stmt: IDENTIFIER . ATRIB expression
+
+    ATRIB  shift, and go to state 43
+
+
+State 17
+
+    2 compound_stmt: OPEN_CURLY_BRACKET stmt_list . CLOSED_CURLY_BRACKET
+
+    CLOSED_CURLY_BRACKET  shift, and go to state 44
+
+
+State 18
+
+    3 stmt_list: stmt .
+    4          | stmt . stmt_list
+
+    IF          shift, and go to state 6
+    WHILE       shift, and go to state 7
+    FOR         shift, and go to state 8
+    READ        shift, and go to state 9
+    WRITE       shift, and go to state 10
+    INTEGER     shift, and go to state 11
+    STRING      shift, and go to state 12
+    CHAR        shift, and go to state 13
+    BOOL        shift, and go to state 14
+    RETURN      shift, and go to state 15
+    IDENTIFIER  shift, and go to state 16
+
+    $default  reduce using rule 3 (stmt_list)
+
+    stmt_list      go to state 45
+    stmt           go to state 18
+    simple_stmt    go to state 19
+    complex_stmt   go to state 20
+    IO_stmt        go to state 21
+    decl_stmt      go to state 22
+    type           go to state 23
+    primary_types  go to state 24
+    array_types    go to state 25
+    assign_stmt    go to state 26
+    return_stmt    go to state 27
+    if_stmt        go to state 28
+    loop_stmt      go to state 29
+    for_stmt       go to state 30
+    while_stmt     go to state 31
+
+
+State 19
+
+    5 stmt: simple_stmt .
+
+    $default  reduce using rule 5 (stmt)
+
+
+State 20
+
+    6 stmt: complex_stmt .
+
+    $default  reduce using rule 6 (stmt)
+
+
+State 21
+
+   10 simple_stmt: IO_stmt . SEMI_COLON
+
+    SEMI_COLON  shift, and go to state 46
+
+
+State 22
+
+    7 simple_stmt: decl_stmt .
+
+    $default  reduce using rule 7 (simple_stmt)
+
+
+State 23
+
+   17 decl_stmt: type . IDENTIFIER NZidentifier
+   18          | type . IDENTIFIER ATRIB expression NZEidentifier
+   19          | type . IDENTIFIER ATRIB OPEN_CURLY_BRACKET CONSTANT array_values
+
+    IDENTIFIER  shift, and go to state 47
+
+
+State 24
+
+   26 type: primary_types .
+   32 array_types: primary_types . OPEN_SQUARE_BRACKET CONSTANT CLOSED_SQUARE_BRACKET
+
+    OPEN_SQUARE_BRACKET  shift, and go to state 48
+
+    $default  reduce using rule 26 (type)
+
+
+State 25
+
+   27 type: array_types .
+
+    $default  reduce using rule 27 (type)
+
+
+State 26
+
+    8 simple_stmt: assign_stmt . SEMI_COLON
+
+    SEMI_COLON  shift, and go to state 49
+
+
+State 27
+
+    9 simple_stmt: return_stmt . SEMI_COLON
+
+    SEMI_COLON  shift, and go to state 50
+
+
+State 28
+
+   11 complex_stmt: if_stmt .
+
+    $default  reduce using rule 11 (complex_stmt)
+
+
+State 29
+
+   12 complex_stmt: loop_stmt .
+
+    $default  reduce using rule 12 (complex_stmt)
+
+
+State 30
+
+   51 loop_stmt: for_stmt .
+
+    $default  reduce using rule 51 (loop_stmt)
+
+
+State 31
+
+   52 loop_stmt: while_stmt .
+
+    $default  reduce using rule 52 (loop_stmt)
+
+
+State 32
+
+   46 if_stmt: IF OPEN_ROUND_BRACKET . condition CLOSED_ROUND_BRACKET compound_stmt
+   47        | IF OPEN_ROUND_BRACKET . condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+
+    NOT                 shift, and go to state 51
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 52
+    term        go to state 41
+    factor      go to state 42
+    condition   go to state 53
+
+
+State 33
+
+   57 while_stmt: WHILE OPEN_ROUND_BRACKET . condition CLOSED_ROUND_BRACKET compound_stmt
+
+    NOT                 shift, and go to state 51
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 52
+    term        go to state 41
+    factor      go to state 42
+    condition   go to state 54
+
+
+State 34
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET . for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt
+   54         | FOR OPEN_ROUND_BRACKET . for_first condition CLOSED_ROUND_BRACKET compound_stmt
+
+    INTEGER     shift, and go to state 11
+    STRING      shift, and go to state 12
+    CHAR        shift, and go to state 13
+    BOOL        shift, and go to state 14
+    IDENTIFIER  shift, and go to state 16
+
+    decl_stmt      go to state 55
+    type           go to state 23
+    primary_types  go to state 24
+    array_types    go to state 25
+    assign_stmt    go to state 56
+    for_first      go to state 57
+
+
+State 35
+
+   13 IO_stmt: READ OPEN_ROUND_BRACKET . IDENTIFIER CLOSED_ROUND_BRACKET
+
+    IDENTIFIER  shift, and go to state 58
+
+
+State 36
+
+   14 IO_stmt: WRITE OPEN_ROUND_BRACKET . expression write_expressions
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 59
+    term        go to state 41
+    factor      go to state 42
+
+
+State 37
+
+   42 factor: IDENTIFIER .
+   43       | IDENTIFIER . OPEN_SQUARE_BRACKET expression CLOSED_SQUARE_BRACKET
+
+    OPEN_SQUARE_BRACKET  shift, and go to state 60
+
+    $default  reduce using rule 42 (factor)
+
+
+State 38
+
+   44 factor: CONSTANT .
+
+    $default  reduce using rule 44 (factor)
+
+
+State 39
+
+   41 factor: OPEN_ROUND_BRACKET . expression CLOSED_ROUND_BRACKET
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 61
+    term        go to state 41
+    factor      go to state 42
+
+
+State 40
+
+   45 return_stmt: RETURN expression .
+
+    $default  reduce using rule 45 (return_stmt)
+
+
+State 41
+
+   34 expression: term . operator expression
+   35           | term .
+
+    PLUS   shift, and go to state 62
+    MINUS  shift, and go to state 63
+
+    $default  reduce using rule 35 (expression)
+
+    operator  go to state 64
+
+
+State 42
+
+   38 term: factor . MUL term
+   39     | factor . DIV term
+   40     | factor .
+
+    MUL  shift, and go to state 65
+    DIV  shift, and go to state 66
+
+    $default  reduce using rule 40 (term)
+
+
+State 43
+
+   33 assign_stmt: IDENTIFIER ATRIB . expression
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 67
+    term        go to state 41
+    factor      go to state 42
+
+
+State 44
+
+    2 compound_stmt: OPEN_CURLY_BRACKET stmt_list CLOSED_CURLY_BRACKET .
+
+    $default  reduce using rule 2 (compound_stmt)
+
+
+State 45
+
+    4 stmt_list: stmt stmt_list .
+
+    $default  reduce using rule 4 (stmt_list)
+
+
+State 46
+
+   10 simple_stmt: IO_stmt SEMI_COLON .
+
+    $default  reduce using rule 10 (simple_stmt)
+
+
+State 47
+
+   17 decl_stmt: type IDENTIFIER . NZidentifier
+   18          | type IDENTIFIER . ATRIB expression NZEidentifier
+   19          | type IDENTIFIER . ATRIB OPEN_CURLY_BRACKET CONSTANT array_values
+
+    SEMI_COLON  shift, and go to state 68
+    COMMA       shift, and go to state 69
+    ATRIB       shift, and go to state 70
+
+    NZidentifier  go to state 71
+
+
+State 48
+
+   32 array_types: primary_types OPEN_SQUARE_BRACKET . CONSTANT CLOSED_SQUARE_BRACKET
+
+    CONSTANT  shift, and go to state 72
+
+
+State 49
+
+    8 simple_stmt: assign_stmt SEMI_COLON .
+
+    $default  reduce using rule 8 (simple_stmt)
+
+
+State 50
+
+    9 simple_stmt: return_stmt SEMI_COLON .
+
+    $default  reduce using rule 9 (simple_stmt)
+
+
+State 51
+
+   59 condition: NOT . expression relational_operator expression conditional_operator condition
+   61          | NOT . expression relational_operator expression
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 73
+    term        go to state 41
+    factor      go to state 42
+
+
+State 52
+
+   58 condition: expression . relational_operator expression conditional_operator condition
+   60          | expression . relational_operator expression
+
+    LT      shift, and go to state 74
+    GT      shift, and go to state 75
+    LE      shift, and go to state 76
+    GE      shift, and go to state 77
+    EQ      shift, and go to state 78
+    NOT_EQ  shift, and go to state 79
+
+    relational_operator  go to state 80
+
+
+State 53
+
+   46 if_stmt: IF OPEN_ROUND_BRACKET condition . CLOSED_ROUND_BRACKET compound_stmt
+   47        | IF OPEN_ROUND_BRACKET condition . CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+
+    CLOSED_ROUND_BRACKET  shift, and go to state 81
+
+
+State 54
+
+   57 while_stmt: WHILE OPEN_ROUND_BRACKET condition . CLOSED_ROUND_BRACKET compound_stmt
+
+    CLOSED_ROUND_BRACKET  shift, and go to state 82
+
+
+State 55
+
+   55 for_first: decl_stmt .
+
+    $default  reduce using rule 55 (for_first)
+
+
+State 56
+
+   56 for_first: assign_stmt . SEMI_COLON
+
+    SEMI_COLON  shift, and go to state 83
+
+
+State 57
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first . condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt
+   54         | FOR OPEN_ROUND_BRACKET for_first . condition CLOSED_ROUND_BRACKET compound_stmt
+
+    NOT                 shift, and go to state 51
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 52
+    term        go to state 41
+    factor      go to state 42
+    condition   go to state 84
+
+
+State 58
+
+   13 IO_stmt: READ OPEN_ROUND_BRACKET IDENTIFIER . CLOSED_ROUND_BRACKET
+
+    CLOSED_ROUND_BRACKET  shift, and go to state 85
+
+
+State 59
+
+   14 IO_stmt: WRITE OPEN_ROUND_BRACKET expression . write_expressions
+
+    COMMA                 shift, and go to state 86
+    CLOSED_ROUND_BRACKET  shift, and go to state 87
+
+    write_expressions  go to state 88
+
+
+State 60
+
+   43 factor: IDENTIFIER OPEN_SQUARE_BRACKET . expression CLOSED_SQUARE_BRACKET
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 89
+    term        go to state 41
+    factor      go to state 42
+
+
+State 61
+
+   41 factor: OPEN_ROUND_BRACKET expression . CLOSED_ROUND_BRACKET
+
+    CLOSED_ROUND_BRACKET  shift, and go to state 90
+
+
+State 62
+
+   36 operator: PLUS .
+
+    $default  reduce using rule 36 (operator)
+
+
+State 63
+
+   37 operator: MINUS .
+
+    $default  reduce using rule 37 (operator)
+
+
+State 64
+
+   34 expression: term operator . expression
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 91
+    term        go to state 41
+    factor      go to state 42
+
+
+State 65
+
+   38 term: factor MUL . term
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    term    go to state 92
+    factor  go to state 42
+
+
+State 66
+
+   39 term: factor DIV . term
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    term    go to state 93
+    factor  go to state 42
+
+
+State 67
+
+   33 assign_stmt: IDENTIFIER ATRIB expression .
+
+    $default  reduce using rule 33 (assign_stmt)
+
+
+State 68
+
+   23 NZidentifier: SEMI_COLON .
+
+    $default  reduce using rule 23 (NZidentifier)
+
+
+State 69
+
+   22 NZidentifier: COMMA . IDENTIFIER NZidentifier
+
+    IDENTIFIER  shift, and go to state 94
+
+
+State 70
+
+   18 decl_stmt: type IDENTIFIER ATRIB . expression NZEidentifier
+   19          | type IDENTIFIER ATRIB . OPEN_CURLY_BRACKET CONSTANT array_values
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_CURLY_BRACKET  shift, and go to state 95
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 96
+    term        go to state 41
+    factor      go to state 42
+
+
+State 71
+
+   17 decl_stmt: type IDENTIFIER NZidentifier .
+
+    $default  reduce using rule 17 (decl_stmt)
+
+
+State 72
+
+   32 array_types: primary_types OPEN_SQUARE_BRACKET CONSTANT . CLOSED_SQUARE_BRACKET
+
+    CLOSED_SQUARE_BRACKET  shift, and go to state 97
+
+
+State 73
+
+   59 condition: NOT expression . relational_operator expression conditional_operator condition
+   61          | NOT expression . relational_operator expression
+
+    LT      shift, and go to state 74
+    GT      shift, and go to state 75
+    LE      shift, and go to state 76
+    GE      shift, and go to state 77
+    EQ      shift, and go to state 78
+    NOT_EQ  shift, and go to state 79
+
+    relational_operator  go to state 98
+
+
+State 74
+
+   63 relational_operator: LT .
+
+    $default  reduce using rule 63 (relational_operator)
+
+
+State 75
+
+   62 relational_operator: GT .
+
+    $default  reduce using rule 62 (relational_operator)
+
+
+State 76
+
+   65 relational_operator: LE .
+
+    $default  reduce using rule 65 (relational_operator)
+
+
+State 77
+
+   64 relational_operator: GE .
+
+    $default  reduce using rule 64 (relational_operator)
+
+
+State 78
+
+   66 relational_operator: EQ .
+
+    $default  reduce using rule 66 (relational_operator)
+
+
+State 79
+
+   67 relational_operator: NOT_EQ .
+
+    $default  reduce using rule 67 (relational_operator)
+
+
+State 80
+
+   58 condition: expression relational_operator . expression conditional_operator condition
+   60          | expression relational_operator . expression
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 99
+    term        go to state 41
+    factor      go to state 42
+
+
+State 81
+
+   46 if_stmt: IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET . compound_stmt
+   47        | IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET . compound_stmt elif_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 100
+
+
+State 82
+
+   57 while_stmt: WHILE OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET . compound_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 101
+
+
+State 83
+
+   56 for_first: assign_stmt SEMI_COLON .
+
+    $default  reduce using rule 56 (for_first)
+
+
+State 84
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition . SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt
+   54         | FOR OPEN_ROUND_BRACKET for_first condition . CLOSED_ROUND_BRACKET compound_stmt
+
+    SEMI_COLON            shift, and go to state 102
+    CLOSED_ROUND_BRACKET  shift, and go to state 103
+
+
+State 85
+
+   13 IO_stmt: READ OPEN_ROUND_BRACKET IDENTIFIER CLOSED_ROUND_BRACKET .
+
+    $default  reduce using rule 13 (IO_stmt)
+
+
+State 86
+
+   15 write_expressions: COMMA . expression write_expressions
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 104
+    term        go to state 41
+    factor      go to state 42
+
+
+State 87
+
+   16 write_expressions: CLOSED_ROUND_BRACKET .
+
+    $default  reduce using rule 16 (write_expressions)
+
+
+State 88
+
+   14 IO_stmt: WRITE OPEN_ROUND_BRACKET expression write_expressions .
+
+    $default  reduce using rule 14 (IO_stmt)
+
+
+State 89
+
+   43 factor: IDENTIFIER OPEN_SQUARE_BRACKET expression . CLOSED_SQUARE_BRACKET
+
+    CLOSED_SQUARE_BRACKET  shift, and go to state 105
+
+
+State 90
+
+   41 factor: OPEN_ROUND_BRACKET expression CLOSED_ROUND_BRACKET .
+
+    $default  reduce using rule 41 (factor)
+
+
+State 91
+
+   34 expression: term operator expression .
+
+    $default  reduce using rule 34 (expression)
+
+
+State 92
+
+   38 term: factor MUL term .
+
+    $default  reduce using rule 38 (term)
+
+
+State 93
+
+   39 term: factor DIV term .
+
+    $default  reduce using rule 39 (term)
+
+
+State 94
+
+   22 NZidentifier: COMMA IDENTIFIER . NZidentifier
+
+    SEMI_COLON  shift, and go to state 68
+    COMMA       shift, and go to state 69
+
+    NZidentifier  go to state 106
+
+
+State 95
+
+   19 decl_stmt: type IDENTIFIER ATRIB OPEN_CURLY_BRACKET . CONSTANT array_values
+
+    CONSTANT  shift, and go to state 107
+
+
+State 96
+
+   18 decl_stmt: type IDENTIFIER ATRIB expression . NZEidentifier
+
+    SEMI_COLON  shift, and go to state 108
+    COMMA       shift, and go to state 109
+
+    NZEidentifier  go to state 110
+
+
+State 97
+
+   32 array_types: primary_types OPEN_SQUARE_BRACKET CONSTANT CLOSED_SQUARE_BRACKET .
+
+    $default  reduce using rule 32 (array_types)
+
+
+State 98
+
+   59 condition: NOT expression relational_operator . expression conditional_operator condition
+   61          | NOT expression relational_operator . expression
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 111
+    term        go to state 41
+    factor      go to state 42
+
+
+State 99
+
+   58 condition: expression relational_operator expression . conditional_operator condition
+   60          | expression relational_operator expression .
+
+    AND  shift, and go to state 112
+    OR   shift, and go to state 113
+
+    $default  reduce using rule 60 (condition)
+
+    conditional_operator  go to state 114
+
+
+State 100
+
+   46 if_stmt: IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt .
+   47        | IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt . elif_stmt
+
+    ELSE  shift, and go to state 115
+    ELIF  shift, and go to state 116
+
+    $default  reduce using rule 46 (if_stmt)
+
+    elif_stmt  go to state 117
+
+
+State 101
+
+   57 while_stmt: WHILE OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt .
+
+    $default  reduce using rule 57 (while_stmt)
+
+
+State 102
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON . assign_stmt CLOSED_ROUND_BRACKET compound_stmt
+
+    IDENTIFIER  shift, and go to state 16
+
+    assign_stmt  go to state 118
+
+
+State 103
+
+   54 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition CLOSED_ROUND_BRACKET . compound_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 119
+
+
+State 104
+
+   15 write_expressions: COMMA expression . write_expressions
+
+    COMMA                 shift, and go to state 86
+    CLOSED_ROUND_BRACKET  shift, and go to state 87
+
+    write_expressions  go to state 120
+
+
+State 105
+
+   43 factor: IDENTIFIER OPEN_SQUARE_BRACKET expression CLOSED_SQUARE_BRACKET .
+
+    $default  reduce using rule 43 (factor)
+
+
+State 106
+
+   22 NZidentifier: COMMA IDENTIFIER NZidentifier .
+
+    $default  reduce using rule 22 (NZidentifier)
+
+
+State 107
+
+   19 decl_stmt: type IDENTIFIER ATRIB OPEN_CURLY_BRACKET CONSTANT . array_values
+
+    COMMA                 shift, and go to state 121
+    CLOSED_CURLY_BRACKET  shift, and go to state 122
+
+    array_values  go to state 123
+
+
+State 108
+
+   25 NZEidentifier: SEMI_COLON .
+
+    $default  reduce using rule 25 (NZEidentifier)
+
+
+State 109
+
+   24 NZEidentifier: COMMA . IDENTIFIER ATRIB expression NZEidentifier
+
+    IDENTIFIER  shift, and go to state 124
+
+
+State 110
+
+   18 decl_stmt: type IDENTIFIER ATRIB expression NZEidentifier .
+
+    $default  reduce using rule 18 (decl_stmt)
+
+
+State 111
+
+   59 condition: NOT expression relational_operator expression . conditional_operator condition
+   61          | NOT expression relational_operator expression .
+
+    AND  shift, and go to state 112
+    OR   shift, and go to state 113
+
+    $default  reduce using rule 61 (condition)
+
+    conditional_operator  go to state 125
+
+
+State 112
+
+   68 conditional_operator: AND .
+
+    $default  reduce using rule 68 (conditional_operator)
+
+
+State 113
+
+   69 conditional_operator: OR .
+
+    $default  reduce using rule 69 (conditional_operator)
+
+
+State 114
+
+   58 condition: expression relational_operator expression conditional_operator . condition
+
+    NOT                 shift, and go to state 51
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 52
+    term        go to state 41
+    factor      go to state 42
+    condition   go to state 126
+
+
+State 115
+
+   50 elif_stmt: ELSE . compound_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 127
+
+
+State 116
+
+   48 elif_stmt: ELIF . OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+   49          | ELIF . OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
+
+    OPEN_ROUND_BRACKET  shift, and go to state 128
+
+
+State 117
+
+   47 if_stmt: IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt .
+
+    $default  reduce using rule 47 (if_stmt)
+
+
+State 118
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt . CLOSED_ROUND_BRACKET compound_stmt
+
+    CLOSED_ROUND_BRACKET  shift, and go to state 129
+
+
+State 119
+
+   54 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition CLOSED_ROUND_BRACKET compound_stmt .
+
+    $default  reduce using rule 54 (for_stmt)
+
+
+State 120
+
+   15 write_expressions: COMMA expression write_expressions .
+
+    $default  reduce using rule 15 (write_expressions)
+
+
+State 121
+
+   20 array_values: COMMA . CONSTANT array_values
+
+    CONSTANT  shift, and go to state 130
+
+
+State 122
+
+   21 array_values: CLOSED_CURLY_BRACKET . SEMI_COLON
+
+    SEMI_COLON  shift, and go to state 131
+
+
+State 123
+
+   19 decl_stmt: type IDENTIFIER ATRIB OPEN_CURLY_BRACKET CONSTANT array_values .
+
+    $default  reduce using rule 19 (decl_stmt)
+
+
+State 124
+
+   24 NZEidentifier: COMMA IDENTIFIER . ATRIB expression NZEidentifier
+
+    ATRIB  shift, and go to state 132
+
+
+State 125
+
+   59 condition: NOT expression relational_operator expression conditional_operator . condition
+
+    NOT                 shift, and go to state 51
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 52
+    term        go to state 41
+    factor      go to state 42
+    condition   go to state 133
+
+
+State 126
+
+   58 condition: expression relational_operator expression conditional_operator condition .
+
+    $default  reduce using rule 58 (condition)
+
+
+State 127
+
+   50 elif_stmt: ELSE compound_stmt .
+
+    $default  reduce using rule 50 (elif_stmt)
+
+
+State 128
+
+   48 elif_stmt: ELIF OPEN_ROUND_BRACKET . condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+   49          | ELIF OPEN_ROUND_BRACKET . condition CLOSED_ROUND_BRACKET compound_stmt
+
+    NOT                 shift, and go to state 51
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 52
+    term        go to state 41
+    factor      go to state 42
+    condition   go to state 134
+
+
+State 129
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET . compound_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 135
+
+
+State 130
+
+   20 array_values: COMMA CONSTANT . array_values
+
+    COMMA                 shift, and go to state 121
+    CLOSED_CURLY_BRACKET  shift, and go to state 122
+
+    array_values  go to state 136
+
+
+State 131
+
+   21 array_values: CLOSED_CURLY_BRACKET SEMI_COLON .
+
+    $default  reduce using rule 21 (array_values)
+
+
+State 132
+
+   24 NZEidentifier: COMMA IDENTIFIER ATRIB . expression NZEidentifier
+
+    IDENTIFIER          shift, and go to state 37
+    CONSTANT            shift, and go to state 38
+    OPEN_ROUND_BRACKET  shift, and go to state 39
+
+    expression  go to state 137
+    term        go to state 41
+    factor      go to state 42
+
+
+State 133
+
+   59 condition: NOT expression relational_operator expression conditional_operator condition .
+
+    $default  reduce using rule 59 (condition)
+
+
+State 134
+
+   48 elif_stmt: ELIF OPEN_ROUND_BRACKET condition . CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+   49          | ELIF OPEN_ROUND_BRACKET condition . CLOSED_ROUND_BRACKET compound_stmt
+
+    CLOSED_ROUND_BRACKET  shift, and go to state 138
+
+
+State 135
+
+   53 for_stmt: FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt .
+
+    $default  reduce using rule 53 (for_stmt)
+
+
+State 136
+
+   20 array_values: COMMA CONSTANT array_values .
+
+    $default  reduce using rule 20 (array_values)
+
+
+State 137
+
+   24 NZEidentifier: COMMA IDENTIFIER ATRIB expression . NZEidentifier
+
+    SEMI_COLON  shift, and go to state 108
+    COMMA       shift, and go to state 109
+
+    NZEidentifier  go to state 139
+
+
+State 138
+
+   48 elif_stmt: ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET . compound_stmt elif_stmt
+   49          | ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET . compound_stmt
+
+    OPEN_CURLY_BRACKET  shift, and go to state 3
+
+    compound_stmt  go to state 140
+
+
+State 139
+
+   24 NZEidentifier: COMMA IDENTIFIER ATRIB expression NZEidentifier .
+
+    $default  reduce using rule 24 (NZEidentifier)
+
+
+State 140
+
+   48 elif_stmt: ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt . elif_stmt
+   49          | ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt .
+
+    ELSE  shift, and go to state 115
+    ELIF  shift, and go to state 116
+
+    $default  reduce using rule 49 (elif_stmt)
+
+    elif_stmt  go to state 141
+
+
+State 141
+
+   48 elif_stmt: ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt .
+
+    $default  reduce using rule 48 (elif_stmt)

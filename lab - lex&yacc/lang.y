@@ -52,35 +52,38 @@
 
 %%
 
-program_stmt : PROGRAM compound_stmt
+program_stmt : PROGRAM compound_stmt {printf("program end\n");}
              ;
 
-compound_stmt : OPEN_CURLY_BRACKET stmt_list CLOSED_CURLY_BRACKET
+compound_stmt : OPEN_CURLY_BRACKET stmt_list CLOSED_CURLY_BRACKET {printf("compound stmt\n");}
               ;
 
-stmt_list : stmt
-          | stmt stmt_list
+stmt_list : stmt stmt_temp
+          ;
+
+stmt_temp : /* empty */
+          | stmt_list
           ;
 
 stmt : simple_stmt
      | complex_stmt
      ;
 
-simple_stmt : decl_stmt
-          | assign_stmt SEMI_COLON
-          | return_stmt SEMI_COLON
-          | IO_stmt SEMI_COLON
+simple_stmt : decl_stmt {printf("declaration stmt\n");}
+          | assign_stmt SEMI_COLON {printf("assign stmt\n");}
+          | return_stmt SEMI_COLON {printf("return stmt\n");}
+          | IO_stmt SEMI_COLON {printf("IO stmt\n");}
           ;
 
-complex_stmt : if_stmt
-            | loop_stmt
+complex_stmt : if_stmt {printf("if stmt\n");}
+            | loop_stmt 
             ;
 
-IO_stmt : READ OPEN_ROUND_BRACKET IDENTIFIER CLOSED_ROUND_BRACKET
-        | WRITE OPEN_ROUND_BRACKET expression write_expressions
+IO_stmt : READ OPEN_ROUND_BRACKET IDENTIFIER CLOSED_ROUND_BRACKET {printf("read IO\n");}
+        | WRITE OPEN_ROUND_BRACKET expression write_expressions {printf("write IO\n");}
              ;
 
-write_expressions : COMMA expression write_expressions
+write_expressions : COMMA expression write_expressions 
                   | CLOSED_ROUND_BRACKET
                   ;
 
@@ -114,7 +117,7 @@ primary_types : INTEGER
 array_types : primary_types OPEN_SQUARE_BRACKET CONSTANT CLOSED_SQUARE_BRACKET
             ;
 
-assign_stmt : IDENTIFIER ATRIB expression
+assign_stmt : IDENTIFIER ATRIB expression 
             ;
 
 expression : term operator expression
@@ -136,11 +139,11 @@ factor : OPEN_ROUND_BRACKET expression CLOSED_ROUND_BRACKET
        | CONSTANT
        ;
 
-return_stmt : RETURN expression
+return_stmt : RETURN expression 
             ;
 
-if_stmt : IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt 
-        | IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt
+if_stmt : IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt {printf("simple if\n");}
+        | IF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt {printf("if with elif/else\n");}
         ;
 
 elif_stmt : ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt elif_stmt 
@@ -148,12 +151,12 @@ elif_stmt : ELIF OPEN_ROUND_BRACKET condition CLOSED_ROUND_BRACKET compound_stmt
           | ELSE compound_stmt
           ;
 
-loop_stmt : for_stmt 
-          | while_stmt
+loop_stmt : for_stmt {printf("for stmt\n");}
+          | while_stmt {printf("while stmt\n");}
           ;
 
-for_stmt : FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt 
-         | FOR OPEN_ROUND_BRACKET for_first condition CLOSED_ROUND_BRACKET compound_stmt
+for_stmt : FOR OPEN_ROUND_BRACKET for_first condition SEMI_COLON assign_stmt CLOSED_ROUND_BRACKET compound_stmt {printf("larger stmt\n");}
+         | FOR OPEN_ROUND_BRACKET for_first condition CLOSED_ROUND_BRACKET compound_stmt {printf("shorter for\n");}
          ;
 
 for_first : decl_stmt 
@@ -181,3 +184,21 @@ conditional_operator : AND
                      ;
 
 %%
+
+
+yyerror(char *s)
+{
+  printf("%s\n", s);
+}
+
+extern FILE *yyin;
+
+main(int argc, char **argv)
+{
+  if (argc > 1) 
+    yyin = fopen(argv[1], "r");
+  if ( (argc > 2) && ( !strcmp(argv[2], "-d") ) ) 
+    yydebug = 1;
+  if ( !yyparse() ) 
+    fprintf(stderr,"No errors detected\n");
+}

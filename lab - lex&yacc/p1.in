@@ -5,7 +5,7 @@ string printMessage = "is the biggest number";
 read(a);
 read(b);
 read(c);
-a = -2;
+a = 3-2;
 if (a > b and a > c)
 {
 write("a", printMessage);
